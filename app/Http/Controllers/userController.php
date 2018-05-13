@@ -72,17 +72,23 @@ class userController extends Controller
     }
 
     public function updateUser(Request $request){
+        $pass = $request->password == null ? null : $request->password;
+        $name = $request->name == null ? null : $request->name;
+        $address = $request->address == null ? null : $request->address;
+        $email = $request->email == null ? null : $request->email;
+        $phone = $request->phone == null ? null : $request->phone;
+
         $kq = DB::table('user')
                 ->where('username', '=', $request->username)
                 ->update([
-                    'password' => $request->password
-                    // 'name'     => $request->name,
-                    // 'address'  => $request->address,
-                    // 'email'    => $request->email,
-                    // 'phone'    => $request->phone,  
+                    'password' => $pass,
+                    'name'     => $name,
+                    'address'  => $address,
+                    'email'    => $email,
+                    'phone'    => $phone
                 ]); 
-        print_r($kq);
-        die;
+        // print_r($kq);
+        // die;
         return response()->json(['statuscode'=>200, 'message'=>'OK', 'data'=>DB::table('user')->where('username', '=', $request->username)->get()], 200);      
     }
 
