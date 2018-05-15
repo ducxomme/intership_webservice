@@ -53,14 +53,18 @@ class userController extends Controller
         if ($kq > 0) {
             return response()->json(['statuscode'=>401, 'message'=>'username already exist', 'data'=>null]);
         }else{
+            $address = $request->address == null ? null : $request->address;
+            $email = $request->email == null ? null : $request->email;
+            $phone = $request->phone == null ? null : $request->phone;
+            
             $user = DB::table('user')->insert([
                 'username' => $request->username, 
                 'role_id'   => $request->role_id,
                 'password' => $request->password,
-                'name'     => $request->name
-                // 'address'  => $request->address,
-                // 'email'    => $request->email,
-                // 'phone'    => $request->phone,    
+                'name'     => $request->name,
+                'address'  => $address,
+                'email'    => $email,
+                'phone'    => $phone 
             ]);
             return response()->json(['statuscode'=>200, 'message'=>'OK', 'data'=>DB::table('user')->where('username', '=', $request->username)->get()], 200);
         }
@@ -72,11 +76,20 @@ class userController extends Controller
     }
 
     public function updateUser(Request $request){
-        $pass = $request->password == null ? null : $request->password;
-        $name = $request->name == null ? null : $request->name;
-        $address = $request->address == null ? null : $request->address;
-        $email = $request->email == null ? null : $request->email;
-        $phone = $request->phone == null ? null : $request->phone;
+        $old_pass = DB::table('user')->select('password')->where('username', '=', $request->username)->first();
+        $pass = $request->password == null ? $old_pass->password : $request->password;
+
+        $old_name = DB::table('user')->select('name')->where('username', '=', $request->username)->first();
+        $name = $request->name == null ? $old_name->name : $request->name;
+        
+        $old_address = DB::table('user')->select('address')->where('username', '=', $request->username)->first();
+        $address = $request->address == null ? $old_address->address : $request->address;
+        
+        $old_email = DB::table('user')->select('email')->where('username', '=', $request->username)->first();
+        $email = $request->email == null ? $old_email->email : $request->email;
+        
+        $old_phone = DB::table('user')->select('phone')->where('username', '=', $request->username)->first();
+        $phone = $request->phone == null ? $old_phone->phone : $request->phone;
 
         $kq = DB::table('user')
                 ->where('username', '=', $request->username)
@@ -87,8 +100,6 @@ class userController extends Controller
                     'email'    => $email,
                     'phone'    => $phone
                 ]); 
-        // print_r($kq);
-        // die;
         return response()->json(['statuscode'=>200, 'message'=>'OK', 'data'=>DB::table('user')->where('username', '=', $request->username)->get()], 200);      
     }
 
