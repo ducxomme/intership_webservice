@@ -27,9 +27,7 @@ Route::post('room/{username}', 'roomController@addRoom');
 Route::put('room/{room_id}', 'roomController@updateRoomDetail');
 // deleteRoom
 Route::delete('room/{room_id}', 'roomController@deleteRoom');
-// unPublicRoom
-Route::post('room/{room_id}', 'roomController@unPublicRoom');
 // searchRoomByPrice
-Route::get('room/price/{from}/{to}');
+Route::get('room/price/{from}/{to}', 'roomController@searchRoomByPrice');
 // searchRoomByAddress
-Route::get('room/address/{from}/{to}');
+Route::post('room/search/address', 'roomController@searchRoomByAddress');

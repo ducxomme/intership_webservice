@@ -58,18 +58,26 @@ class roomController extends Controller
     }
 
     public function deleteRoom(Request $request){
-
-    }
-
-    public function unPublicRoom(Request $request){
-
+    	$result = DB::table('room')->where('room_id', '=', $request->room_id)->delete();
+    	return response()->json(['statuscode' => 200, 'message' => "Delete Success"], 200);
     }
 
     public function searchRoomByPrice(Request $request){
-
+    	$result = DB::table('room')->whereBetween('price', [$request->from, $request->to])->get();
+    	return response()->json(['statuscode' => 200, 'message' => 'OK', 'data' => $result], 200);
     }
 
     public function searchRoomByAddress(Request $request){
-
+    	if ($request->district_id == null) {
+    		// Tim theo phuong, xa
+    		$result = DB::table('room')->where('ward_id', '=', $request->ward_id)->get();
+    	}else if ($request->ward_id == null){
+    		$result = DB::table('room')
+    					->join('ward', 'room.ward_id', '=', 'ward.ward_id')
+    					->join('district', 'ward.district_id', '=', 'district.district_id')
+    					->where('district.district_id', '=', $request->district_id)
+    					->select('room.*')->get();
+    	}	
+    	return response()->json(['statuscode' => 200, 'message' => 'OK', 'data' => $result], 200);
     }
 }
