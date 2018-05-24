@@ -9,12 +9,12 @@ class roomController extends Controller
 {
     public function getAllRoom(){
     	$result = DB::table('room')->get();
-    	return response()->json(['statuscode' => 200, 'data' => $result], 200);			
+    	return response()->json(['statuscode' => 200, 'message'=>'OK', 'data' => $result], 200);			
     }
 
     public function getRoomDetail(Request $request){
     	$result = DB::table('room')->where('room_id', '=', $request->room_id)->get();
-    	return response()->json(['statuscode' => 200, 'data' => $result], 200);	
+    	return response()->json(['statuscode' => 200, 'message'=>'OK', 'data' => $result], 200);	
     }
 
     public function addRoom(Request $request){
@@ -26,7 +26,7 @@ class roomController extends Controller
     		'rooms_empty'	=> $request->rooms_empty
     	]);	
     	//DB::table('room')->where('room_id', '=', $result)->get()
-    	return response()->json(['statuscode' => 200, 'data' => DB::table('room')->where('room_id', '=', $result)->get()], 200);
+    	return response()->json(['statuscode' => 200, 'message'=>'OK', 'data' => DB::table('room')->where('room_id', '=', $result)->get()], 200);
     }
 
     public function updateRoomDetail(Request $request){
@@ -59,7 +59,7 @@ class roomController extends Controller
 
     public function deleteRoom(Request $request){
     	$result = DB::table('room')->where('room_id', '=', $request->room_id)->delete();
-    	return response()->json(['statuscode' => 200, 'message' => "Delete Success"], 200);
+    	return response()->json(['statuscode' => 200, 'message' => "Delete Success", 'data' => ""], 200);
     }
 
     public function searchRoomByPrice(Request $request){
