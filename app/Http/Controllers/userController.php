@@ -38,7 +38,7 @@ class userController extends Controller
        $kq=DB::table("user")->where('username','=',$request->username)->where('password','=',$request->password)->count();
        if($kq>0)
        {
-            $info=DB::table("user")->where('username','=',$request->username)->where('password','=',$request->password)->get();
+            $info=DB::table("user")->where('username','=',$request->username)->where('password','=',$request->password)->first();
             return response()->json(['statuscode'=>200,'message'=>'OK','data'=> $info], 200);
        }
        else
@@ -66,7 +66,7 @@ class userController extends Controller
                 'email'    => $email,
                 'phone'    => $phone 
             ]);
-            return response()->json(['statuscode'=>200, 'message'=>'OK', 'data'=>DB::table('user')->where('username', '=', $request->username)->get()], 200);
+            return response()->json(['statuscode'=>200, 'message'=>'OK', 'data'=>DB::table('user')->where('username', '=', $request->username)->first()], 200);
         }
     }
 
@@ -100,11 +100,11 @@ class userController extends Controller
                     'email'    => $email,
                     'phone'    => $phone
                 ]); 
-        return response()->json(['statuscode'=>200, 'message'=>'OK', 'data'=>DB::table('user')->where('username', '=', $request->username)->get()], 200);      
+        return response()->json(['statuscode'=>200, 'message'=>'OK', 'data'=>DB::table('user')->where('username', '=', $request->username)->first()], 200);
     }
 
     public function getUser(Request $request){
-        $kq = DB::table('user')->where('username', '=', $request->username)->get();
+        $kq = DB::table('user')->where('username', '=', $request->username)->first();
         return response()->json(['statuscode' => 200, 'message' => 'OK', 'data' => $kq], 200);       
     }
 
